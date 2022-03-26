@@ -62,6 +62,16 @@ async function run() {
 
         //** write data to excel*/
         var rowUpdate = worksheet.getRow(i + 1);
+        if (i === 1) {
+            console.log({
+                val: rowUpdate.getCell(cf.FAP_CONFIG.grade_after_bonus_col).value
+            })
+        }
+        if (!["", NaN, null].includes(rowUpdate.getCell(cf.FAP_CONFIG.grade_after_bonus_col).value) ||
+            !["", NaN, null].includes(rowUpdate.getCell(cf.FAP_CONFIG.raw_grade_col).value)) {
+            throw new Error("Grade col already have data!");
+        }
+
         rowUpdate.getCell(cf.FAP_CONFIG.grade_after_bonus_col).value = gradeAfterBonus.gradeWithBonus;
         rowUpdate.getCell(cf.FAP_CONFIG.raw_grade_col).value = data[cf.FAP_CONFIG.raw_grade_col];
         rowUpdate.getCell(cf.FAP_CONFIG.bonus_col).value = "";
@@ -71,6 +81,7 @@ async function run() {
         // console.log(data);
     }
     await workbook.xlsx.writeFile(outputFilePath);
+    return outputFilePath;
 }
 
-run();
+run().then(console.log).catch(console.error);
