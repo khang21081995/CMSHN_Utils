@@ -2,7 +2,7 @@ const cf = require('./config');
 const excelToJson = require('convert-excel-to-json');
 const ExcelJS = require('exceljs');
 const path = require('path');
-let outputFilePath = path.join('./Output', path.basename(cf.FAP_CONFIG.path));
+let outputFilePath = cf.saveBackToInput ? cf.FAP_CONFIG.path : path.join('./Output', path.basename(cf.FAP_CONFIG.path));
 
 function sum(arr) {
     let ret = 0;
