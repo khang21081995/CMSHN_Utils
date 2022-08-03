@@ -15,11 +15,14 @@ function sum(arr) {
 function getGradeAfterBonus(rawGrade, totalBonus) {
     let ret = {
         gradeWithBonus: rawGrade,
-        remainBonus: totalBonus
+        remainBonus: totalBonus || 0
     };
     let bonusToGetTen = 10 - rawGrade;
-    let usedBonus = bonusToGetTen > totalBonus ? totalBonus : bonusToGetTen;
-    ret.gradeWithBonus = rawGrade + usedBonus;
+    if (bonusToGetTen<0){
+        throw new Error("Bad grade");
+    }
+    let usedBonus = bonusToGetTen > (totalBonus * cf.FAP_CONFIG.bonus_scale) ? totalBonus : bonusToGetTen / cf.FAP_CONFIG.bonus_scale;
+    ret.gradeWithBonus = rawGrade + usedBonus * cf.FAP_CONFIG.bonus_scale;
     ret.remainBonus = +(totalBonus - usedBonus).toPrecision(3);
     return ret;
 }
